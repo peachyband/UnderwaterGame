@@ -101,12 +101,13 @@ public class RoomsPlacer : MonoBehaviour
             // или сколько у него соседей, чтобы генерировать более плотные, или наоборот, растянутые данжи
             Vector3Int position = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
             //newRoom.RotateRandomly();
-            var boundx = newRoom.transform.GetChild(0).transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            var boundy = newRoom.transform.GetChild(1).transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            var boundz = newRoom.transform.GetChild(2).transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            float priorityX = (float)(boundx.size.z / 13.5);
-            float priorityY = (float)(boundy.size.z / 13.5);
-            float priorityZ = (float)(boundz.size.z / 13.5);
+            var boundx = newRoom.transform.GetChild(0).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+            var boundy = newRoom.transform.GetChild(1).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+            var boundz = newRoom.transform.GetChild(2).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+            Debug.Log("New room sizes x: " + boundx + " y: " + boundy + " z: " + boundz);
+            float priorityX = (float)(boundx.size.z / 5);
+            float priorityY = (float)(boundy.size.z / 5);
+            float priorityZ = (float)(boundz.size.z / 5);
             if (ConnectToSomething(newRoom, position))
             {
                 newRoom.transform.position = new Vector3((position.x - Center.x) * boundx.size.z * priorityX
