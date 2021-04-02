@@ -36,3 +36,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 itsgone/UserSettings/EditorUserSettings.asset
+itsgone/Logs/AssetImportWorker0.log
