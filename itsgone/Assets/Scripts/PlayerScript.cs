@@ -27,8 +27,9 @@ public class PlayerScript : MonoBehaviour
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
+        Vector3 dir = transform.right * moveX + transform.forward * moveZ;
 
-        charCntrl.Move(new Vector3 (transform.right.x * moveX, 0, transform.forward.z * moveZ) * speed * Time.deltaTime);
+        charCntrl.Move(dir * speed * Time.deltaTime);
     }
 
 }
