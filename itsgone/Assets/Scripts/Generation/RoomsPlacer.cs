@@ -16,6 +16,7 @@ public class RoomsPlacer : MonoBehaviour
     public Vector3Int Length;
     public Vector3Int Center;
     private Room[,,] spawnedRooms;
+
     private void Start()
     {
         spawnedRooms = new Room[Length.x, Length.y, Length.z];
@@ -36,25 +37,29 @@ public class RoomsPlacer : MonoBehaviour
                         {
                             if (spawnedRooms[x, y, z + 1] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x, y, z + 1].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z + 1].name + " and " + spawnedRooms[x, y, z].name)) 
+                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z + 1].name + " and " + spawnedRooms[x, y, z].name) && 
+                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z + 1])) 
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z + 1], new Vector3(0, 0, 1));
                             }
                             if (spawnedRooms[x, y, z - 1] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x, y, z - 1].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z - 1].name + " and " + spawnedRooms[x, y, z].name))
+                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z - 1].name + " and " + spawnedRooms[x, y, z].name) &&
+                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z - 1]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z - 1], new Vector3(0, 0, -1));
                             }
                             if (spawnedRooms[x + 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x + 1, y, z].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x + 1, y, z].name + " and " + spawnedRooms[x, y, z].name))
+                               !spawnedBridges.Contains("between " + spawnedRooms[x + 1, y, z].name + " and " + spawnedRooms[x, y, z].name) &&
+                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x + 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x + 1, y, z], new Vector3(1, 0, 0));
                             }
                             if (spawnedRooms[x - 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x - 1, y, z].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x - 1, y, z].name + " and " + spawnedRooms[x, y, z].name))
+                               !spawnedBridges.Contains("between " + spawnedRooms[x - 1, y, z].name + " and " + spawnedRooms[x, y, z].name) &&
+                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x - 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x - 1, y, z], new Vector3(-1, 0, 0));
                             }
@@ -63,6 +68,7 @@ public class RoomsPlacer : MonoBehaviour
                 }
             }
         }
+        
     }
 
     private void PlaceOneRoom()
@@ -110,9 +116,8 @@ public class RoomsPlacer : MonoBehaviour
                 newRoom.transform.position = new Vector3((position.x - Center.x) * bound.size.z * priorityX
                                                 , (position.y - Center.y) * bound.size.z * priorityY
                                                     , (position.z - Center.z) * bound.size.z * priorityZ) ;
-                spawnedRooms[position.x, position.y, position.z] = newRoom;
-                newRoom.name = position.x + " " + position.y + " " + position.z;
-                
+                                                        spawnedRooms[position.x, position.y, position.z] = newRoom;
+                                                            newRoom.name = position.x + " " + position.y + " " + position.z;
                 return;
             }
         }
@@ -158,31 +163,43 @@ public class RoomsPlacer : MonoBehaviour
         {
             room.DoorU.SetActive(false);
             selectedRoom.DoorD.SetActive(false);
+            if(!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if(!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         else if (selectedDirection == Vector3Int.down)
         {
             room.DoorD.SetActive(false);
             selectedRoom.DoorU.SetActive(false);
+            if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         else if (selectedDirection == Vector3Int.right)
         {
             room.DoorR.SetActive(false);
             selectedRoom.DoorL.SetActive(false);
+            if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         else if (selectedDirection == Vector3Int.left)
         {
             room.DoorL.SetActive(false);
             selectedRoom.DoorR.SetActive(false);
+            if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         else if (selectedDirection == Vector3Int.forward)
         {
             room.DoorF.SetActive(false);
             selectedRoom.DoorB.SetActive(false);
+            if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         else if (selectedDirection == Vector3Int.back)
         {
             room.DoorB.SetActive(false);
             selectedRoom.DoorF.SetActive(false);
+            if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
         return true;
     }

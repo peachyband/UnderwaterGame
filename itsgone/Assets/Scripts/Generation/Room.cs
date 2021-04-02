@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
@@ -8,10 +10,10 @@ public class Room : MonoBehaviour
     public GameObject DoorL;
     public GameObject DoorF;
     public GameObject DoorB;
+    public List<Room> Neighboors;
     public void RotateRandomly()
     {
         int count = Random.Range(0, 4);
-
         for (int i = 0; i < count; i++)
         {
             transform.Rotate(0, 90, 0);
