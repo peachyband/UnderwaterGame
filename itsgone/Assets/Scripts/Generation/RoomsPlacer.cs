@@ -26,11 +26,11 @@ public class RoomsPlacer : MonoBehaviour
         }
         foreach(Transform room in _container.transform)
         {
-            for(int y = 0; y < spawnedRooms.GetLength(1); y++)
+            for(int y = 1; y < spawnedRooms.GetLength(1) - 1; y++)
             {
-                for (int x = 0; x < spawnedRooms.GetLength(0); x++)
+                for (int x = 1; x < spawnedRooms.GetLength(0) - 1; x++)
                 {
-                    for (int z = 0; z < spawnedRooms.GetLength(2); z++)
+                    for (int z = 1; z < spawnedRooms.GetLength(2) - 1; z++)
                     {
                         if (spawnedRooms[x, y, z] != null)
                         {
@@ -101,18 +101,15 @@ public class RoomsPlacer : MonoBehaviour
             // или сколько у него соседей, чтобы генерировать более плотные, или наоборот, растянутые данжи
             Vector3Int position = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
             //newRoom.RotateRandomly();
-            var boundx = newRoom.transform.GetChild(0).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            var boundy = newRoom.transform.GetChild(1).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            var boundz = newRoom.transform.GetChild(2).GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            Debug.Log("New room sizes x: " + boundx + " y: " + boundy + " z: " + boundz);
-            float priorityX = (float)(boundx.size.z / 5);
-            float priorityY = (float)(boundy.size.z / 5);
-            float priorityZ = (float)(boundz.size.z / 5);
+            var bound = newRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+            float priorityX = (float)(bound.size.x / 10);
+            float priorityY = (float)(bound.size.y / 10);
+            float priorityZ = (float)(bound.size.z / 10);
             if (ConnectToSomething(newRoom, position))
             {
-                newRoom.transform.position = new Vector3((position.x - Center.x) * boundx.size.z * priorityX
-                                                , (position.y - Center.y) * boundy.size.z * priorityY
-                                                    , (position.z - Center.z) * boundz.size.z * priorityZ) ;
+                newRoom.transform.position = new Vector3((position.x - Center.x) * bound.size.z * priorityX
+                                                , (position.y - Center.y) * bound.size.z * priorityY
+                                                    , (position.z - Center.z) * bound.size.z * priorityZ) ;
                 spawnedRooms[position.x, position.y, position.z] = newRoom;
                 newRoom.name = position.x + " " + position.y + " " + position.z;
                 
