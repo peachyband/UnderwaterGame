@@ -25,11 +25,11 @@ public class PlayerCamera : MonoBehaviour
     }
     void UpdateRotation()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().rotation = Quaternion.Euler(0, currentX, 0);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().rotation = Quaternion.Euler(0, currentX, GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().anglz);
     }
     void LateUpdate()
     {
-        Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+        Quaternion rotation = Quaternion.Euler(currentY, currentX, GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().anglz);
         transform.rotation = rotation;
         UpdateRotation();
         //if (GameObject.Find("Pockets").GetComponent<InventorySys>().OpenedInv == true && GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().isGround == false || GameObject.Find("Pockets").GetComponent<InventorySys>().OpenedInv == false)
