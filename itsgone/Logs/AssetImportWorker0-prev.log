@@ -82,3 +82,78 @@ Received Import Request.
 Start importing Assets/Prefabs/InventoryCell.prefab using Guid(f81fe2e2be741ef40a9514ad7bbf53c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9eb95a9630b240d43b3bb35ac5a5502f') in 0.118044 seconds
   Import took 0.125646 seconds .
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.005175 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 1.07 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.802 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.94 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2396 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 126.2 MB.
+System memory in use after: 123.5 MB.
+
+Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 2911.
+Total: 7.731400 ms (FindLiveObjects: 0.711800 ms CreateObjectMapping: 0.220700 ms MarkObjects: 4.408300 ms  DeleteObjects: 2.387800 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 9848.909017 seconds.
+  path: Assets/Scripts/PlayerScript.cs
+  artifactKey: Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerScript.cs using Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b00d1988ae7ba0b1ea2c5372df479b79') in 0.024196 seconds
+  Import took 0.032107 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 241.759979 seconds.
+  path: Assets/Scripts/PlayerScript.cs
+  artifactKey: Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerScript.cs using Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd28e80691b8cbd697d5b6853c3ce051b') in 0.012040 seconds
+  Import took 0.019996 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004610 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.67 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.810 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.79 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2396 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 126.3 MB.
+System memory in use after: 123.5 MB.
+
+Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 2914.
+Total: 8.977200 ms (FindLiveObjects: 0.378400 ms CreateObjectMapping: 0.179100 ms MarkObjects: 3.943300 ms  DeleteObjects: 4.473500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 66.180422 seconds.
+  path: Assets/Scripts/PlayerScript.cs
+  artifactKey: Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/PlayerScript.cs using Guid(c523cc57dfd26ba4f9f7f9fabb034644) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ea441030129a385596d8dca4361ae03') in 0.013409 seconds
+  Import took 0.020564 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
