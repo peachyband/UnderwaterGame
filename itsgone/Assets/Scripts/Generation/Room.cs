@@ -11,6 +11,16 @@ public class Room : MonoBehaviour
     public GameObject DoorF;
     public GameObject DoorB;
     public List<Room> Neighboors;
+    public enum Type
+    {
+        mobs = 1,
+        tres = 2,
+        mobs_n_tres = 3,
+        tres_n_artfs = 4,
+        mobs_n_artfs = 5,
+        keys = 6
+    }
+    public Type roomType;
     public void RotateRandomly()
     {
         int count = Random.Range(0, 4);

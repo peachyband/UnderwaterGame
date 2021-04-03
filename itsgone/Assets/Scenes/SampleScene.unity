@@ -394,9 +394,10 @@ MonoBehaviour:
   noll: {fileID: 40708091876710731, guid: c61da4dc4b8186c4fb2267e982baa272, type: 3}
   deskPref: {fileID: 3177517625662435189, guid: e27993329a717d341ba7264cd85655b5, type: 3}
   _container: {fileID: 397184029}
-  RoomCount: 24
-  Length: {x: 5, y: 5, z: 5}
-  Center: {x: 2, y: 3, z: 2}
+  RoomCount: 23
+  entranceY: 
+  Length: {x: 3, y: 5, z: 3}
+  Center: {x: 2, y: 2, z: 2}
 --- !u!4 &685752552
 Transform:
   m_ObjectHideFlags: 0
@@ -595,7 +596,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7290626582943480112, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_Name
-      value: 2 3 2
+      value: 2  2  2
       objectReference: {fileID: 0}
     - target: {fileID: 7955136584870650762, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_RootOrder

@@ -13,18 +13,38 @@ public class RoomsPlacer : MonoBehaviour
     public GameObject deskPref;
     public GameObject _container;
     public int RoomCount;
+    public bool[] entranceY;
     public Vector3Int Length;
     public Vector3Int Center;
     private Room[,,] spawnedRooms;
+    private int ArtfRooms;
+    private int KeyRooms;
+    private int MobRooms;
+    private int TresRooms;
+    private int MobNTres;
+    private int ArtfsNMobs;
+    private int ArtfsNTres;
 
     private void Start()
     {
         spawnedRooms = new Room[Length.x, Length.y, Length.z];
         spawnedRooms[Center.x, Center.y, Center.z] = StartingRoom;
+        entranceY = new bool[Length.y];
+        KeyRooms = 3;
+        ArtfRooms = 4;
+        MobRooms = TresRooms = MobNTres = (RoomCount - (KeyRooms + ArtfRooms)) / 3;
+        ArtfsNTres = Random.Range(1, RoomCount - (KeyRooms + MobRooms + TresRooms + MobNTres) - 1);
+        ArtfsNMobs = ArtfRooms - ArtfsNTres;
+        Debug.Log("KeyRooms count is: " + KeyRooms +"; TresRooms count is: " + TresRooms + ";\n" +
+            "MobRooms count is: " + MobRooms + "; MobNTres count is: " + MobNTres) ;
+        Debug.Log("ArtfsNTres count is: " + ArtfsNTres + "; ArtfsNMobs count is: " + ArtfsNMobs);
+
+
         for (int i = 0; i < RoomCount - 1 ; i++)
         {
             PlaceOneRoom();
         }
+
         foreach(Transform room in _container.transform)
         {
             for(int y = 1; y < spawnedRooms.GetLength(1) - 1; y++)
@@ -87,9 +107,9 @@ public class RoomsPlacer : MonoBehaviour
                     int maxX = spawnedRooms.GetLength(0) - 1;
                     int maxY = spawnedRooms.GetLength(1) - 1;
                     int maxZ = spawnedRooms.GetLength(2) - 1;
-                    
+                                       
                     if (x > 0 && spawnedRooms[x - 1, y, z] == null) vacantPlaces.Add(new Vector3Int(x - 1, y, z));
-                    if (y > 0 && spawnedRooms[x, y - 1, z] == null) vacantPlaces.Add(new Vector3Int(x, y - 1, z));
+                    if (y > 0 && spawnedRooms[x, y - 1, z] == null) { vacantPlaces.Add(new Vector3Int(x, y - 1, z));}
                     if (z > 0 && spawnedRooms[x, y, z - 1] == null) vacantPlaces.Add(new Vector3Int(x, y, z - 1));
                     if (x < maxX && spawnedRooms[x + 1, y, z] == null) vacantPlaces.Add(new Vector3Int(x + 1, y, z));
                     if (y < maxY && spawnedRooms[x, y + 1, z] == null) vacantPlaces.Add(new Vector3Int(x, y + 1, z));
@@ -99,7 +119,6 @@ public class RoomsPlacer : MonoBehaviour
         }
 
         // Эту строчку можно заменить на выбор комнаты с учётом её вероятности, вроде как в ChunksPlacer.GetRandomChunk()
-
         int limit = 500;
         while (limit-- > 0)
         {
@@ -118,6 +137,42 @@ public class RoomsPlacer : MonoBehaviour
                                                     , (position.z - Center.z) * bound.size.z * priorityZ) ;
                                                         spawnedRooms[position.x, position.y, position.z] = newRoom;
                                                             newRoom.name = position.x + " " + position.y + " " + position.z;
+                if (KeyRooms > 0)
+                {
+                    newRoom.roomType = Room.Type.keys;
+                    KeyRooms -= 1;
+                }
+                else 
+                {
+                    if (MobRooms > 0)
+                    {
+                        newRoom.roomType = Room.Type.mobs;
+                        MobRooms -= 1;
+                    }
+                    else if (TresRooms > 0)
+                    {
+                        newRoom.roomType = Room.Type.tres;
+                        TresRooms -= 1;
+                    }
+                    else if (MobNTres > 0)
+                    {
+                        newRoom.roomType = Room.Type.mobs_n_tres;
+                        MobNTres -= 1;
+                    }
+                    else
+                    {
+                        if(ArtfsNMobs > 0)
+                        {
+                            newRoom.roomType = Room.Type.mobs_n_artfs;
+                            ArtfsNMobs -= 1;
+                        }
+                        else if (ArtfsNTres > 0)
+                        {
+                            newRoom.roomType = Room.Type.tres_n_artfs;
+                            ArtfsNTres -= 1;
+                        }
+                    }
+                }
                 return;
             }
         }
@@ -159,15 +214,17 @@ public class RoomsPlacer : MonoBehaviour
         Vector3Int selectedDirection = neighbours[Random.Range(0, neighbours.Count)];
         Room selectedRoom = spawnedRooms[p.x + selectedDirection.x, p.y + selectedDirection.y, p.z + selectedDirection.z];
         
-        if (selectedDirection == Vector3Int.up)
+        if (selectedDirection == Vector3Int.up && entranceY[p.y] == false)
         {
+            entranceY[p.y] = true;
             room.DoorU.SetActive(false);
             selectedRoom.DoorD.SetActive(false);
-            if(!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
+            if(!room.Neighboors.Contains(selectedRoom)) room.Neighboors.Add(selectedRoom);
             if(!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
-        else if (selectedDirection == Vector3Int.down)
+        else if (selectedDirection == Vector3Int.down && entranceY[p.y - 1] == false)
         {
+            entranceY[p.y - 1] = true;
             room.DoorD.SetActive(false);
             selectedRoom.DoorU.SetActive(false);
             if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
