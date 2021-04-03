@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class weapon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
     public bool isAttacking = false;
 
@@ -15,27 +15,19 @@ public class weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1")) 
+        if (Input.GetMouseButtonDown(0))
         {
             isAttacking = true;
         }
     }
 
-    private void OnCollisionEnter(Collision coll)
+    private void OnTriggerStay(Collider coll)
     {
-        if ((coll.gameObject.tag == "Enemy") && (isAttacking))
+        if ((coll.gameObject.tag == "Enemy") && isAttacking)
         {
             //Destroy(coll.gameObject);
             Debug.Log("ATTACK");
-        }
-    }
-
-    private void OnTriggerEnter(Collider coll)
-    {
-        if ((coll.gameObject.tag == "Enemy") && (isAttacking))
-        {
-            //Destroy(coll.gameObject);
-            Debug.Log("ATTACK");
+            isAttacking = false;
         }
     }
 
