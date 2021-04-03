@@ -280,6 +280,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5958471786794056275, guid: d2e504137d394dd4a9cf1c3d9d19a092, type: 3}
+      propertyPath: m_Height
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958471786794056275, guid: d2e504137d394dd4a9cf1c3d9d19a092, type: 3}
+      propertyPath: m_SkinWidth
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 5958471786794056277, guid: d2e504137d394dd4a9cf1c3d9d19a092, type: 3}
       propertyPath: m_RootOrder
       value: 2
