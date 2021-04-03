@@ -35,7 +35,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-itsgone/Logs/
-itsgone/UserSettings/EditorUserSettings.asset
+itsgone\Logs\
+itsgone\UserSettings\EditorUserSettings.asset
 *.log
 *.log
