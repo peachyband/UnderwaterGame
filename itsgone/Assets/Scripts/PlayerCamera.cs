@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    private Transform player;
     public float senstivityX = 5;
     public float senstivityY = 1;
     private float currentX = 0;
@@ -12,7 +13,7 @@ public class PlayerCamera : MonoBehaviour
     public float maxY = 50;
     void Start()
     {
-
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     void Update()
@@ -25,20 +26,13 @@ public class PlayerCamera : MonoBehaviour
     }
     void UpdateRotation()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().rotation = Quaternion.Euler(0, currentX, 0);
+        player.rotation = Quaternion.Euler(0, currentX, 0);
     }
     void LateUpdate()
     {
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         transform.rotation = rotation;
         UpdateRotation();
-        //if (GameObject.Find("Pockets").GetComponent<InventorySys>().OpenedInv == true && GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().isGround == false || GameObject.Find("Pockets").GetComponent<InventorySys>().OpenedInv == false)
-        //{
-        //}
-        //else if (GameObject.Find("Pockets").GetComponent<InventorySys>().OpenedInv == true && GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().isGround == true)
-        //{
-        //    transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
-        //    transform.rotation = rotation;
-        //}
+ 
     }
 }
