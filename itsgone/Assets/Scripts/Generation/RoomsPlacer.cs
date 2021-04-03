@@ -108,8 +108,44 @@ public class RoomsPlacer : MonoBehaviour
                     int maxY = spawnedRooms.GetLength(1) - 1;
                     int maxZ = spawnedRooms.GetLength(2) - 1;
                                        
+                    if (KeyRooms > 0)
+                    {
+                        spawnedRooms[x, y, z].roomType = Room.Type.keys;
+                        KeyRooms -= 1;
+                    }
+                    else 
+                    {
+                        if (MobRooms > 0)
+                        {
+                            spawnedRooms[x, y, z].roomType = Room.Type.mobs;
+                            MobRooms -= 1;
+                        }
+                        else if (TresRooms > 0)
+                        {
+                            spawnedRooms[x, y, z].roomType = Room.Type.tres;
+                            TresRooms -= 1;
+                        }
+                        else if (MobNTres > 0)
+                        {
+                            spawnedRooms[x, y, z].roomType = Room.Type.mobs_n_tres;
+                            MobNTres -= 1;
+                        }
+                        else
+                        {
+                            if (ArtfsNMobs > 0)
+                            {
+                                spawnedRooms[x, y, z].roomType = Room.Type.mobs_n_artfs;
+                                ArtfsNMobs -= 1;
+                            }
+                            else if (ArtfsNTres > 0)
+                            {
+                                spawnedRooms[x, y, z].roomType = Room.Type.tres_n_artfs;
+                                ArtfsNTres -= 1;
+                            }
+                        }
+                    }
                     if (x > 0 && spawnedRooms[x - 1, y, z] == null) vacantPlaces.Add(new Vector3Int(x - 1, y, z));
-                    if (y > 0 && spawnedRooms[x, y - 1, z] == null) { vacantPlaces.Add(new Vector3Int(x, y - 1, z));}
+                    if (y > 0 && spawnedRooms[x, y - 1, z] == null) vacantPlaces.Add(new Vector3Int(x, y - 1, z));
                     if (z > 0 && spawnedRooms[x, y, z - 1] == null) vacantPlaces.Add(new Vector3Int(x, y, z - 1));
                     if (x < maxX && spawnedRooms[x + 1, y, z] == null) vacantPlaces.Add(new Vector3Int(x + 1, y, z));
                     if (y < maxY && spawnedRooms[x, y + 1, z] == null) vacantPlaces.Add(new Vector3Int(x, y + 1, z));
@@ -137,42 +173,6 @@ public class RoomsPlacer : MonoBehaviour
                                                     , (position.z - Center.z) * bound.size.z * priorityZ) ;
                                                         spawnedRooms[position.x, position.y, position.z] = newRoom;
                                                             newRoom.name = position.x + " " + position.y + " " + position.z;
-                if (KeyRooms > 0)
-                {
-                    newRoom.roomType = Room.Type.keys;
-                    KeyRooms -= 1;
-                }
-                else 
-                {
-                    if (MobRooms > 0)
-                    {
-                        newRoom.roomType = Room.Type.mobs;
-                        MobRooms -= 1;
-                    }
-                    else if (TresRooms > 0)
-                    {
-                        newRoom.roomType = Room.Type.tres;
-                        TresRooms -= 1;
-                    }
-                    else if (MobNTres > 0)
-                    {
-                        newRoom.roomType = Room.Type.mobs_n_tres;
-                        MobNTres -= 1;
-                    }
-                    else
-                    {
-                        if(ArtfsNMobs > 0)
-                        {
-                            newRoom.roomType = Room.Type.mobs_n_artfs;
-                            ArtfsNMobs -= 1;
-                        }
-                        else if (ArtfsNTres > 0)
-                        {
-                            newRoom.roomType = Room.Type.tres_n_artfs;
-                            ArtfsNTres -= 1;
-                        }
-                    }
-                }
                 return;
             }
         }
