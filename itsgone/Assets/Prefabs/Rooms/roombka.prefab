@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 13068e6fa1bf5814bb4926e7b12b9d52, type: 2}
+  - {fileID: 2100000, guid: c3a27f9d294abf74d84efe2d2a5689b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -627,6 +627,8 @@ MonoBehaviour:
   DoorL: {fileID: 3167405709183326485}
   DoorF: {fileID: 2424466177338672351}
   DoorB: {fileID: 6736515131758095520}
+  Neighboors: []
+  roomType: 0
 --- !u!1 &8228041777210799704
 GameObject:
   m_ObjectHideFlags: 0

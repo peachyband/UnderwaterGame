@@ -2410,3 +2410,35 @@ Received Import Request.
 Start importing Assets/Models/Locations/City/ZamokZ.obj using Guid(fab5fa13057ad06409449c35198f4024) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '78b4c76d35faf9fd72acc179a17ba0bf') in 0.039911 seconds
   Import took 0.046696 seconds .
 
+========================================================================
+Received Import Request.
+  Time since last request: 144.481405 seconds.
+  path: Assets/Materials/Materials
+  artifactKey: Guid(8c47acb6e4320f34192cd0371091664f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Materials/Materials using Guid(8c47acb6e4320f34192cd0371091664f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1359dd16be6b5e248e18f7a976c94e43') in 0.006707 seconds
+  Import took 0.014157 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.005037 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.77 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.780 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.78 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2371 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 117.3 MB.
+System memory in use after: 117.5 MB.
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 3386.
+Total: 4.309900 ms (FindLiveObjects: 0.494800 ms CreateObjectMapping: 0.184000 ms MarkObjects: 3.598400 ms  DeleteObjects: 0.030200 ms)
+
