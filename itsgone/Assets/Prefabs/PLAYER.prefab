@@ -248,11 +248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c523cc57dfd26ba4f9f7f9fabb034644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pCamera: {fileID: 0}
+  anglz: 0
   speed: 6
   jumpSpeed: 8
-  gravity: 20
+  gravity: 9.81
   lives: 5
-  isGround: 0
 --- !u!54 &5958471786794056274
 Rigidbody:
   m_ObjectHideFlags: 0
