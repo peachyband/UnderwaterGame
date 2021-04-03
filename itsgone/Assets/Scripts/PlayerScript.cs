@@ -1,9 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerScript : MonoBehaviour
 {
+    public int health = 100;
+    public int maxHealth = 100;
+
+    public float oxygen = 100;
+
+    public Image hImage;
+    public Text healthText;
+    public Image oxImage;
+    public Text oxText;
+
     private CharacterController charCntrl;
     private float velocityY = 0f;
     public PlayerCamera pCamera;
@@ -15,7 +26,7 @@ public class PlayerScript : MonoBehaviour
     public float speed = 6.0f;
     public float jumpSpeed = 23.0f;
     public float gravity = 9.81f;
-    public int lives = 5;
+    //public int lives = 5;
 
     private float initialLives = 5;
 
@@ -24,22 +35,30 @@ public class PlayerScript : MonoBehaviour
         charCntrl = this.GetComponent<CharacterController>();
         pCamera = Camera.main.GetComponent<PlayerCamera>();
         Cursor.lockState = CursorLockMode.Locked;
-        initialLives = lives;
+        //initialLives = lives;
     }
 
     void Update()
     {
+        oxygen = Mathf.Clamp(oxygen, 0, 100);
+        oxygen -= Time.deltaTime * 2;
+        oxImage.fillAmount = oxygen / 100;
+        oxText.text = "OXYGEN: " + (int)oxygen;
 
+        health = Mathf.Clamp(health, 0, maxHealth);
+        hImage.fillAmount = (float)health / maxHealth;
+        healthText.text = "HEALTH: " + health;
         //if (charCntrl.isGrounded) isGr = true;
 
         if (charCntrl.isGrounded && velocityY < 0) velocityY = -2f;
 
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
+            health -= 20;
             //pCamera.enabled = false;
-            Quaternion q = Quaternion.Euler(0, 0, -90.0f);
-            transform.localRotation = q;
-            Camera.main.transform.localRotation = q;
+            //Quaternion q = Quaternion.Euler(0, 0, -90.0f);
+            //transform.localRotation = q;
+            //Camera.main.transform.localRotation = q;
             //m = -1;
             //pCamera.enabled = true;
 
