@@ -48,41 +48,48 @@ public class RoomsPlacer : MonoBehaviour
         }
         foreach (Transform room in _container.transform)
         {
-            for(int y = 1; y < spawnedRooms.GetLength(1) - 1; y++)
+            int maxX = spawnedRooms.GetLength(0) - 1;
+            int maxZ = spawnedRooms.GetLength(2) - 1;
+
+            for (int y = 0; y < spawnedRooms.GetLength(1); y++)
             {
-                for (int x = 1; x < spawnedRooms.GetLength(0) - 1; x++)
+                for (int x = 0; x < spawnedRooms.GetLength(0); x++)
                 {
-                    for (int z = 1; z < spawnedRooms.GetLength(2) - 1; z++)
+                    for (int z = 0; z < spawnedRooms.GetLength(2); z++)
                     {
                         if (spawnedRooms[x, y, z] != null)
                         {
-                            if (spawnedRooms[x, y, z + 1] != null &&
+                            if (z < maxZ && spawnedRooms[x, y, z + 1] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x, y, z + 1].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z + 1].name + " and " + spawnedRooms[x, y, z].name) && 
-                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z + 1])) 
+                               !spawnedBridges.Contains("between " + spawnedRooms[x, y, z + 1].name + " and " + spawnedRooms[x, y, z].name) &&
+                               spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z + 1]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z + 1], new Vector3(0, 0, 1));
+                                Debug.Log("Founded space for bridge!");
                             }
-                            if (spawnedRooms[x, y, z - 1] != null &&
+                            if (z > 0 && spawnedRooms[x, y, z - 1] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x, y, z - 1].name) &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z - 1].name + " and " + spawnedRooms[x, y, z].name) &&
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z - 1]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z - 1], new Vector3(0, 0, -1));
+                                Debug.Log("Founded space for bridge!");
                             }
-                            if (spawnedRooms[x + 1, y, z] != null &&
+                            if (x < maxX && spawnedRooms[x + 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x + 1, y, z].name) &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x + 1, y, z].name + " and " + spawnedRooms[x, y, z].name) &&
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x + 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x + 1, y, z], new Vector3(1, 0, 0));
+                                Debug.Log("Founded space for bridge!");
                             }
-                            if (spawnedRooms[x - 1, y, z] != null &&
+                            if (x > 0 && spawnedRooms[x - 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x - 1, y, z].name) &&
-                               !spawnedBridges.Contains("between " + spawnedRooms[x - 1, y, z].name + " and " + spawnedRooms[x, y, z].name) &&
+                               !spawnedBridges.Contains("between " + spawnedRooms[x - 1, y, z].name + " and " + spawnedRooms[x, y, z].name) && 
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x - 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x - 1, y, z], new Vector3(-1, 0, 0));
+                                Debug.Log("Founded space for bridge!");
                             }
                         }
                     }
@@ -196,18 +203,59 @@ public class RoomsPlacer : MonoBehaviour
 
     public void MakeABridge(Room currentRoom, Room newRoom, Vector3 direction)
     {
-        float dist = Vector3.Distance(currentRoom.transform.position, newRoom.transform.position);
+        var bound1 = currentRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+        var bound2 = newRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+        float distant = 0;
+        if (direction.z == 1)
+        {
+            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(0, 0, bound1.size.z / 4), 
+                newRoom.transform.position - new Vector3(0,0, bound2.size.z / 4));
+        }
+        else if (direction.z == -1)
+        {
+            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(0, 0, bound1.size.z / 4),
+                newRoom.transform.position + new Vector3(0, 0, bound2.size.z / 4));
+        }
+        else if (direction.x == 1)
+        {
+            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(bound1.size.x / 4, 0, 0),
+                newRoom.transform.position - new Vector3(bound2.size.x / 4, 0, 0));
+        }
+        else if (direction.x == -1)
+        {
+            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(bound1.size.x / 4, 0, 0),
+                newRoom.transform.position + new Vector3(bound2.size.x / 4, 0, 0));
+        }
         float size = deskPref.transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh.bounds.size.z;
-        float amount = dist / size;
+        float amount = distant / size;
         GameObject bridge = Instantiate(noll, currentRoom.transform.position, Quaternion.identity, currentRoom.transform);
         for(int i = 0; i < amount; i++)
         {
-            GameObject desk = Instantiate(deskPref, currentRoom.transform.position + direction * size * i, Quaternion.Euler(new Vector3(0, Mathf.Max(direction.x * 90, direction.z * 90), 0)), bridge.transform);
-            desk.name = "desk";
+            GameObject desk;
+            if (direction.z == 1)
+            {
+                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(0, 0, bound1.size.z / 4) + direction * size * i, Quaternion.Euler(new Vector3(0, -90, 0)), bridge.transform);
+                desk.transform.name = "desk";
+            }
+            else if(direction.z == -1)
+            {
+                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(0, 0, bound1.size.z / 4) + direction * size * i, Quaternion.Euler(new Vector3(0, 90, 0)), bridge.transform);
+                desk.transform.name = "desk";
+            }
+            else if(direction.x == 1)
+            {
+                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(bound1.size.x / 4, 0, 0) + direction * size * i, Quaternion.Euler(new Vector3(0, 0, 0)), bridge.transform);
+                desk.transform.name = "desk";
+            }
+            else if(direction.x == -1)
+            {
+                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(bound1.size.x / 4, 0, 0) + direction * size * i, Quaternion.Euler(new Vector3(0, -180, 0)), bridge.transform);
+                desk.transform.name = "desk";
+            }
         }
         bridge.name = "between " + currentRoom.name + " and " + newRoom.name;
         spawnedBridges.Add(bridge.name);
-        Debug.Log("distance is: " + dist + " so there are " + amount + " needed to build a desk");
+        Debug.Log("BUILDING: distance is: " + distant + " so there are " + amount + " needed to build a desk");
     }
 
     private bool ConnectToSomething(Room room, Vector3Int p)
@@ -219,8 +267,8 @@ public class RoomsPlacer : MonoBehaviour
 
         if (room.DoorR != null && p.x < maxX && spawnedRooms[p.x + 1, p.y, p.z]?.DoorL != null) neighbours.Add(Vector3Int.right);
         if (room.DoorL != null && p.x > 0 && spawnedRooms[p.x - 1, p.y, p.z]?.DoorR != null) neighbours.Add(Vector3Int.left);
-        if (room.DoorU != null && p.y < maxY && spawnedRooms[p.x, p.y + 1, p.z]?.DoorD != null && spawnedRooms[p.x, p.y + 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.up);
-        if (room.DoorD != null && p.y > 0 && spawnedRooms[p.x, p.y - 1, p.z]?.DoorU != null && spawnedRooms[p.x, p.y - 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.down);
+        if (room.DoorU != null && p.y < maxY && spawnedRooms[p.x, p.y + 1, p.z]?.DoorD != null && entranceY[p.y] == false && spawnedRooms[p.x, p.y + 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.up);
+        if (room.DoorD != null && p.y > 0 && spawnedRooms[p.x, p.y - 1, p.z]?.DoorU != null && entranceY[p.y - 1] == false && spawnedRooms[p.x, p.y - 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.down);
         if (room.DoorF != null && p.z < maxZ && spawnedRooms[p.x, p.y, p.z + 1]?.DoorB != null) neighbours.Add(Vector3Int.forward);
         if (room.DoorB != null && p.z > 0 && spawnedRooms[p.x, p.y, p.z - 1]?.DoorF != null) neighbours.Add(Vector3Int.back);
 
@@ -251,6 +299,7 @@ public class RoomsPlacer : MonoBehaviour
             selectedRoom.DoorL.SetActive(false);
             if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
             if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
+            //MakeABridge(room, selectedRoom, new Vector3(1, 0, 0));
         }
         else if (selectedDirection == Vector3Int.left)
         {
@@ -258,6 +307,7 @@ public class RoomsPlacer : MonoBehaviour
             selectedRoom.DoorR.SetActive(false);
             if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
             if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
+            //MakeABridge(room, selectedRoom, new Vector3(-1, 0, 0));
         }
         else if (selectedDirection == Vector3Int.forward)
         {
@@ -265,6 +315,7 @@ public class RoomsPlacer : MonoBehaviour
             selectedRoom.DoorB.SetActive(false);
             if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
             if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
+            //MakeABridge(room, selectedRoom, new Vector3(0, 0, 1));
         }
         else if (selectedDirection == Vector3Int.back)
         {
@@ -272,6 +323,7 @@ public class RoomsPlacer : MonoBehaviour
             selectedRoom.DoorF.SetActive(false);
             if (!room.Neighboors.Contains(selectedRoom)) selectedRoom.Neighboors.Add(selectedRoom);
             if (!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
+            //MakeABridge(room, selectedRoom, new Vector3(0, 0, -1));
         }
         return true;
     }

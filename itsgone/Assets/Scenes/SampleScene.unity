@@ -427,7 +427,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5c1665968b74448bced4fd98f19e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomPrefabs:
+  KeyRoomPrefabs:
+  - {fileID: 7833056618909738624, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
+  TresRoomPrefabs:
+  - {fileID: 7833056618909738624, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
+  ArtfRoomPrefabs:
   - {fileID: 7833056618909738624, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
   spawnedBridges: []
   StartingRoom: {fileID: 1461752431182082560}
@@ -644,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7955136584870650762, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7955136584870650762, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -652,7 +656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7955136584870650762, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.62
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7955136584870650762, guid: 2f12ae6f90f207d42a3d90769d97b7ac, type: 3}
       propertyPath: m_LocalRotation.w
