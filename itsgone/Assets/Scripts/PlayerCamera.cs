@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    public bool freeze = false;
+
     private Transform player;
     public float senstivityX = 5;
     public float senstivityY = 1;
@@ -26,13 +28,16 @@ public class PlayerCamera : MonoBehaviour
     }
     void UpdateRotation()
     {
-        player.rotation = Quaternion.Euler(0, currentX, 0);
+         player.rotation = Quaternion.Euler(0, currentX, 0);
     }
     void LateUpdate()
     {
-        Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-        transform.rotation = rotation;
-        UpdateRotation();
+        if (!freeze)
+        {
+            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+            transform.rotation = rotation;
+            UpdateRotation();
+        }
  
     }
 }

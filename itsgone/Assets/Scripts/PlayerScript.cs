@@ -14,6 +14,9 @@ public class PlayerScript : MonoBehaviour
     public Text healthText;
     public Image oxImage;
     public Text oxText;
+    public Image lowH;
+    public Image scroll;
+    private Color lowC;
 
     private CharacterController charCntrl;
     private float velocityY = 0f;
@@ -35,6 +38,8 @@ public class PlayerScript : MonoBehaviour
         charCntrl = this.GetComponent<CharacterController>();
         pCamera = Camera.main.GetComponent<PlayerCamera>();
         Cursor.lockState = CursorLockMode.Locked;
+        lowC = Color.red;
+        lowC.a = 0f;
         //initialLives = lives;
     }
 
@@ -44,6 +49,11 @@ public class PlayerScript : MonoBehaviour
         oxygen -= Time.deltaTime * 2;
         oxImage.fillAmount = oxygen / 100;
         oxText.text = "OXYGEN: " + (int)oxygen;
+
+        if (((float)health/maxHealth) <= 0.2f)
+            lowC.a = 0.5f - ((float)health / maxHealth) * 0.5f;
+        else lowC.a = 0f;
+        //lowH.color = lowC;
 
         health = Mathf.Clamp(health, 0, maxHealth);
         hImage.fillAmount = (float)health / maxHealth;
@@ -87,6 +97,25 @@ public class PlayerScript : MonoBehaviour
         charCntrl.Move(transform.up * velocityY /*+ new Vector3(0, velocityY, 0)*/ *Time.deltaTime);
 
         
+    }
+
+    void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.tag == "Scroll")
+        {
+            Debug.Log("Text");
+            scroll.gameObject.SetActive(true);
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Scroll")
+        {
+            Debug.Log("Text");
+            if (Input.GetKeyDown(KeyCode.E))
+                scroll.gameObject.SetActive(true);
+        }
     }
 
 }
