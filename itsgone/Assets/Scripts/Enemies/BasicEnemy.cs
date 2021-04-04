@@ -5,6 +5,7 @@ using UnityEngine;
 public class BasicEnemy : MonoBehaviour
 {
     public int health = 100;
+    public int damage = 20;
 
     private Rigidbody rig;
 
@@ -54,6 +55,8 @@ public class BasicEnemy : MonoBehaviour
 
         //transform.position = Vector3.SmoothDamp(transform.position, player.position, ref velocity, 0.3f);
     }
+
+   
 
     private void OnCollisionEnter(Collision collision)
     {
