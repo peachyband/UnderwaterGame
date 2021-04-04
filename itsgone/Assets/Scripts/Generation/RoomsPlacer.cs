@@ -9,6 +9,7 @@ public class RoomsPlacer : MonoBehaviour
     public Room[] KeyRoomPrefabs;
     public Room[] TresRoomPrefabs;
     public Room[] ArtfRoomPrefabs;
+    public GameObject[] ScrollPrefabs;
     public List<string> spawnedBridges;
     public Room StartingRoom;
     public GameObject noll;
@@ -65,7 +66,7 @@ public class RoomsPlacer : MonoBehaviour
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z + 1]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z + 1], new Vector3(0, 0, 1));
-                                Debug.Log("Founded space for bridge!");
+                                //Debug.Log("Founded space for bridge!");
                             }
                             if (z > 0 && spawnedRooms[x, y, z - 1] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x, y, z - 1].name) &&
@@ -73,7 +74,7 @@ public class RoomsPlacer : MonoBehaviour
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x, y, z - 1]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x, y, z - 1], new Vector3(0, 0, -1));
-                                Debug.Log("Founded space for bridge!");
+                                //Debug.Log("Founded space for bridge!");
                             }
                             if (x < maxX && spawnedRooms[x + 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x + 1, y, z].name) &&
@@ -81,7 +82,7 @@ public class RoomsPlacer : MonoBehaviour
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x + 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x + 1, y, z], new Vector3(1, 0, 0));
-                                Debug.Log("Founded space for bridge!");
+                                //Debug.Log("Founded space for bridge!");
                             }
                             if (x > 0 && spawnedRooms[x - 1, y, z] != null &&
                                !spawnedBridges.Contains("between " + spawnedRooms[x, y, z].name + " and " + spawnedRooms[x - 1, y, z].name) &&
@@ -89,12 +90,20 @@ public class RoomsPlacer : MonoBehaviour
                                spawnedRooms[x, y, z].Neighboors.Contains(spawnedRooms[x - 1, y, z]))
                             {
                                 MakeABridge(spawnedRooms[x, y, z], spawnedRooms[x - 1, y, z], new Vector3(-1, 0, 0));
-                                Debug.Log("Founded space for bridge!");
+                                //Debug.Log("Founded space for bridge!");
                             }
                         }
                     }
                 }
             }
+        }
+        foreach (GameObject scroll in ScrollPrefabs)
+        {
+            Transform pickedroom = _container.transform.GetChild(Random.Range(0, _container.transform.childCount));
+            Room room = pickedroom.GetComponent<Room>();
+            GameObject Scroll = Instantiate(ScrollPrefabs[Random.Range(0, ScrollPrefabs.Length)], room.transform);
+            Scroll.transform.position = room.ScrollsPos[Random.Range(0, room.ScrollsPos.Length)].position;
+            room.scrolled = true;
         }
     }
 
@@ -183,16 +192,16 @@ public class RoomsPlacer : MonoBehaviour
             // или сколько у него соседей, чтобы генерировать более плотные, или наоборот, растянутые данжи
             Vector3Int position = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
             //newRoom.RotateRandomly();
-            var bound = newRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-            int priorityX = (int)(bound.size.x / 5);
-            int priorityY = (int)(bound.size.y / 5);
-            int priorityZ = (int)(bound.size.z / 5);
+            var boxbound = newRoom.transform.GetChild(0).GetComponent<BoxCollider>().size;
+            int priorityX = (int)(boxbound.x / 5);
+            int priorityY = (int)(boxbound.y / 5);
+            int priorityZ = (int)(boxbound.z / 5);
             Debug.Log("priorities: " + priorityX + "; " + priorityY + "; " + priorityZ);
             if (ConnectToSomething(newRoom, position))
             {
-                newRoom.transform.position = new Vector3((position.x - Center.x) * bound.size.z * priorityX
-                                                , (position.y - Center.y) * bound.size.z * priorityY
-                                                    , (position.z - Center.z) * bound.size.z * priorityZ) ;
+                newRoom.transform.position = new Vector3((position.x - Center.x) * boxbound.x * priorityX
+                                                , (position.y - Center.y) * boxbound.y * priorityY
+                                                    , (position.z - Center.z) * boxbound.z * priorityZ) ;
                                                         spawnedRooms[position.x, position.y, position.z] = newRoom;
                                                             newRoom.name = position.x + " " + position.y + " " + position.z;
                 return;
@@ -203,28 +212,28 @@ public class RoomsPlacer : MonoBehaviour
 
     public void MakeABridge(Room currentRoom, Room newRoom, Vector3 direction)
     {
-        var bound1 = currentRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
-        var bound2 = newRoom.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh.bounds;
+        var boxbound1 = currentRoom.transform.GetChild(0).GetComponent<BoxCollider>().size;
+        var boxbound2 = newRoom.transform.GetChild(0).GetComponent<BoxCollider>().size;
         float distant = 0;
         if (direction.z == 1)
         {
-            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(0, 0, bound1.size.z / 4), 
-                newRoom.transform.position - new Vector3(0,0, bound2.size.z / 4));
+            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(0, 0, boxbound1.z / 2), 
+                newRoom.transform.position - new Vector3(0, 0, boxbound2.z / 2));
         }
         else if (direction.z == -1)
         {
-            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(0, 0, bound1.size.z / 4),
-                newRoom.transform.position + new Vector3(0, 0, bound2.size.z / 4));
+            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(0, 0, boxbound1.z / 2),
+                newRoom.transform.position + new Vector3(0, 0, boxbound2.z / 2));
         }
         else if (direction.x == 1)
         {
-            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(bound1.size.x / 4, 0, 0),
-                newRoom.transform.position - new Vector3(bound2.size.x / 4, 0, 0));
+            distant = Vector3.Distance(currentRoom.transform.position + new Vector3(boxbound1.x / 2, 0, 0),
+                newRoom.transform.position - new Vector3(boxbound2.x / 2, 0, 0));
         }
         else if (direction.x == -1)
         {
-            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(bound1.size.x / 4, 0, 0),
-                newRoom.transform.position + new Vector3(bound2.size.x / 4, 0, 0));
+            distant = Vector3.Distance(currentRoom.transform.position - new Vector3(boxbound1.x / 2, 0, 0),
+                newRoom.transform.position + new Vector3(boxbound2.x / 2, 0, 0));
         }
         float size = deskPref.transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh.bounds.size.z;
         float amount = distant / size;
@@ -234,22 +243,26 @@ public class RoomsPlacer : MonoBehaviour
             GameObject desk;
             if (direction.z == 1)
             {
-                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(0, 0, bound1.size.z / 4) + direction * size * i, Quaternion.Euler(new Vector3(0, -90, 0)), bridge.transform);
+                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(0, 0, boxbound1.z / 2) + 
+                    direction * size * i, Quaternion.Euler(new Vector3(0, -90, 0)), bridge.transform);
                 desk.transform.name = "desk";
             }
             else if(direction.z == -1)
             {
-                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(0, 0, bound1.size.z / 4) + direction * size * i, Quaternion.Euler(new Vector3(0, 90, 0)), bridge.transform);
+                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(0, 0, boxbound1.z / 2) + 
+                    direction * size * i, Quaternion.Euler(new Vector3(0, 90, 0)), bridge.transform);
                 desk.transform.name = "desk";
             }
             else if(direction.x == 1)
             {
-                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(bound1.size.x / 4, 0, 0) + direction * size * i, Quaternion.Euler(new Vector3(0, 0, 0)), bridge.transform);
+                desk = Instantiate(deskPref, currentRoom.transform.position + new Vector3(boxbound1.x / 2, 0, 0) + 
+                    direction * size * i, Quaternion.Euler(new Vector3(0, 0, 0)), bridge.transform);
                 desk.transform.name = "desk";
             }
             else if(direction.x == -1)
             {
-                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(bound1.size.x / 4, 0, 0) + direction * size * i, Quaternion.Euler(new Vector3(0, -180, 0)), bridge.transform);
+                desk = Instantiate(deskPref, currentRoom.transform.position - new Vector3(boxbound1.x / 2, 0, 0) + 
+                    direction * size * i, Quaternion.Euler(new Vector3(0, -180, 0)), bridge.transform);
                 desk.transform.name = "desk";
             }
         }
@@ -267,8 +280,10 @@ public class RoomsPlacer : MonoBehaviour
 
         if (room.DoorR != null && p.x < maxX && spawnedRooms[p.x + 1, p.y, p.z]?.DoorL != null) neighbours.Add(Vector3Int.right);
         if (room.DoorL != null && p.x > 0 && spawnedRooms[p.x - 1, p.y, p.z]?.DoorR != null) neighbours.Add(Vector3Int.left);
-        if (room.DoorU != null && p.y < maxY && spawnedRooms[p.x, p.y + 1, p.z]?.DoorD != null && entranceY[p.y] == false && spawnedRooms[p.x, p.y + 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.up);
-        if (room.DoorD != null && p.y > 0 && spawnedRooms[p.x, p.y - 1, p.z]?.DoorU != null && entranceY[p.y - 1] == false && spawnedRooms[p.x, p.y - 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.down);
+        if (room.DoorU != null && p.y < maxY && spawnedRooms[p.x, p.y + 1, p.z]?.DoorD != null && p.y != Center.y + 1 &&
+            entranceY[p.y] == false && spawnedRooms[p.x, p.y + 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.up);
+        if (room.DoorD != null && p.y > 0 && spawnedRooms[p.x, p.y - 1, p.z]?.DoorU != null && p.y != Center.y - 1 &&
+            entranceY[p.y - 1] == false && spawnedRooms[p.x, p.y - 1, p.z].Neighboors.Count != 0) neighbours.Add(Vector3Int.down);
         if (room.DoorF != null && p.z < maxZ && spawnedRooms[p.x, p.y, p.z + 1]?.DoorB != null) neighbours.Add(Vector3Int.forward);
         if (room.DoorB != null && p.z > 0 && spawnedRooms[p.x, p.y, p.z - 1]?.DoorF != null) neighbours.Add(Vector3Int.back);
 
@@ -277,7 +292,7 @@ public class RoomsPlacer : MonoBehaviour
         Vector3Int selectedDirection = neighbours[Random.Range(0, neighbours.Count)];
         Room selectedRoom = spawnedRooms[p.x + selectedDirection.x, p.y + selectedDirection.y, p.z + selectedDirection.z];
         
-        if (selectedDirection == Vector3Int.up)
+        if (selectedDirection == Vector3Int.up && p.y != Center.y + 1)
         {
             entranceY[p.y] = true;
             room.DoorU.SetActive(false);
@@ -285,8 +300,9 @@ public class RoomsPlacer : MonoBehaviour
             if(!room.Neighboors.Contains(selectedRoom)) room.Neighboors.Add(selectedRoom);
             if(!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
-        else if (selectedDirection == Vector3Int.down)
+        else if (selectedDirection == Vector3Int.down && p.y != Center.y - 1)
         {
+            Debug.Log("Building y-pass with coordinates: " + new Vector3(p.x, p.y, p.z) + " and " + Center);
             entranceY[p.y - 1] = true;
             room.DoorD.SetActive(false);
             selectedRoom.DoorU.SetActive(false);

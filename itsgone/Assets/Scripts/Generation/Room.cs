@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
+    public bool scrolled = false;
+    public Transform[] ScrollsPos;
     public GameObject DoorU;
     public GameObject DoorR;
     public GameObject DoorD;
