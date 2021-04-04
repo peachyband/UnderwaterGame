@@ -101,7 +101,7 @@ public class RoomsPlacer : MonoBehaviour
         {
             Transform pickedroom = _container.transform.GetChild(Random.Range(0, _container.transform.childCount));
             Room room = pickedroom.GetComponent<Room>();
-            GameObject Scroll = Instantiate(ScrollPrefabs[Random.Range(0, ScrollPrefabs.Length)], room.transform);
+            GameObject Scroll = Instantiate(ScrollPrefabs[Random.Range(0, ScrollPrefabs.Length)], room.transform); 
             Scroll.transform.position = room.ScrollsPos[Random.Range(0, room.ScrollsPos.Length)].position;
             room.scrolled = true;
         }
@@ -292,7 +292,7 @@ public class RoomsPlacer : MonoBehaviour
         Vector3Int selectedDirection = neighbours[Random.Range(0, neighbours.Count)];
         Room selectedRoom = spawnedRooms[p.x + selectedDirection.x, p.y + selectedDirection.y, p.z + selectedDirection.z];
         
-        if (selectedDirection == Vector3Int.up && p.y != Center.y + 1)
+        if (selectedDirection == Vector3Int.up && !room.starting)
         {
             entranceY[p.y] = true;
             room.DoorU.SetActive(false);
@@ -300,7 +300,7 @@ public class RoomsPlacer : MonoBehaviour
             if(!room.Neighboors.Contains(selectedRoom)) room.Neighboors.Add(selectedRoom);
             if(!selectedRoom.Neighboors.Contains(room)) selectedRoom.Neighboors.Add(room);
         }
-        else if (selectedDirection == Vector3Int.down && p.y != Center.y - 1)
+        else if (selectedDirection == Vector3Int.down && !room.starting)
         {
             Debug.Log("Building y-pass with coordinates: " + new Vector3(p.x, p.y, p.z) + " and " + Center);
             entranceY[p.y - 1] = true;
