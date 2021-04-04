@@ -7,6 +7,9 @@ public class BasicEnemy : MonoBehaviour
     public int health = 100;
     public int damage = 20;
 
+    public float distance = 20f;
+    public bool isMoving = false;
+
     private Rigidbody rig;
 
     public float a = 2f;
@@ -38,6 +41,13 @@ public class BasicEnemy : MonoBehaviour
         if (health <= 0)
             Destroy(this.gameObject);
 
+        if (Vector3.Distance(transform.position, player.position) <= distance)
+        {
+            transform.LookAt(player);
+            if (isMoving)
+                transform.position = Vector3.SmoothDamp(transform.position, player.position, ref velocity, 3.3f);
+        }
+
         //transform.position = sPos + new Vector3(x, y, z);
 
         //t = Mathf.Clamp(t, 0f, 2 * Mathf.PI);
@@ -61,5 +71,10 @@ public class BasicEnemy : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //dir = -dir;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, distance);
     }
 }
