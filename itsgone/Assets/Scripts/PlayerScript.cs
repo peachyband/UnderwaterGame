@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerScript : MonoBehaviour
 {
+    public bool isInvincible = false;
+
     public int health = 100;
     public int maxHealth = 100;
 
@@ -99,6 +103,21 @@ public class PlayerScript : MonoBehaviour
         
     }
 
+    IEnumerator dam (int damage)
+    {
+        
+        health -= damage;
+        Color c = Color.red;
+        c.a = 0.4f;
+        lowH.color = c; 
+        yield return new WaitForSeconds(3f);
+        isInvincible = false;
+        c.a = 0;
+        lowH.color = c;
+
+
+    }
+
     void OnCollisionStay(Collision col)
     {
         if (col.gameObject.tag == "Scroll")
@@ -115,6 +134,13 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("Text");
             if (Input.GetKeyDown(KeyCode.E))
                 scroll.gameObject.SetActive(true);
+        }
+
+        if (col.gameObject.tag == "Enemy" && !isInvincible)
+        {
+            isInvincible = true;
+            StartCoroutine(dam(col.gameObject.GetComponent<BasicEnemy>().damage));
+          
         }
     }
 

@@ -42,7 +42,9 @@ public class weapon : MonoBehaviour
             //coll.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
             //Debug.Log("ATTACK");
             isAttacking = false;
-            StartCoroutine(glow(coll.gameObject.GetComponent<MeshRenderer>().material));
+            if (coll.gameObject.GetComponent<MeshRenderer>())
+                StartCoroutine(glow(coll.gameObject.GetComponent<MeshRenderer>().material));
+            else StartCoroutine(glow(coll.gameObject.GetComponent<SkinnedMeshRenderer>().material));
             coll.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * force * Time.deltaTime, ForceMode.Impulse);
             coll.gameObject.GetComponent<BasicEnemy>().health -= damage;
         }

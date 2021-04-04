@@ -14,6 +14,7 @@ public class pickUp : MonoBehaviour
     public GameObject[] weapons;
     public weapon[] weaponScript;
     public PlayerCamera cam;
+    public PlayerScript player;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class pickUp : MonoBehaviour
         for (int i = 0; i < weapons.Length; i++)
             weaponScript[i] = weapons[i].GetComponent<weapon>();
         cam = Camera.main.GetComponent<PlayerCamera>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
     }
 
     // Update is called once per frame
@@ -38,6 +40,7 @@ public class pickUp : MonoBehaviour
 
     void changeTime() 
     {
+        
         Time.timeScale -= dir;
         for (int i = 0; i < weapons.Length; i++)
             weaponScript[i].isAtt = !weaponScript[i].isAtt;
@@ -65,8 +68,10 @@ public class pickUp : MonoBehaviour
             Debug.Log("Text");
             if (Input.GetButton("Use"))
             {
+                hint.text = "Нажмите Q для выхода";
                 sclText.text = col.GetComponent<Scroll>().Text; 
                 scroll.gameObject.SetActive(true);
+                
                 changeTime();
             }
         }
