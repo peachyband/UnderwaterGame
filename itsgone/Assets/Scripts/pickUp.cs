@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class pickUp : MonoBehaviour
 {
     public Image scroll;
+    public Text sclText;
     public Text hint;
     private int dir = 1;
    // private bool bbool = false;
@@ -16,6 +17,7 @@ public class pickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sclText = scroll.gameObject.GetComponentInChildren<Text>();
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         Debug.Log(weapons.Length);
         weaponScript = new weapon[weapons.Length];
@@ -63,6 +65,7 @@ public class pickUp : MonoBehaviour
             Debug.Log("Text");
             if (Input.GetButton("Use"))
             {
+                sclText.text = col.GetComponent<Scroll>().Text; 
                 scroll.gameObject.SetActive(true);
                 changeTime();
             }
